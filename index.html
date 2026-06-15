@@ -147,7 +147,7 @@
     }
     else if(s===2){
       h=topflow("Paso 2 · "+st.barber)+'<div class="up" style="padding:6px 0;min-height:calc(100% - 64px);display:flex;flex-direction:column;justify-content:center;">';
-      h+='<div style="padding:0 16px;"><div class="disp" style="font-size:38px;white-space:nowrap;">¿QUÉ TE <span style="color:var(--gold2);">HACÉS?</span></div><div style="height:2px;width:46px;background:var(--gold);margin:10px 0 4px;"></div></div>';
+      h+='<div style="padding:0 16px;"><div class="disp" style="font-size:38px;white-space:nowrap;">¿HOY QUÉ <span style="color:var(--gold2);">TOCA?</span></div><div style="height:2px;width:46px;background:var(--gold);margin:10px 0 4px;"></div></div>';
       h+='<div class="lab" style="font-size:10px;color:var(--golddim);text-align:center;padding:10px 16px 2px;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="ti ti-arrows-horizontal" style="color:var(--gold);"></i> Deslizá y elegí el servicio</div>';
       var scard=function(x,i){return '<button class="opt" data-v="'+i+'" style="display:block;text-align:left;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--s1);padding:0;">'
         +'<div style="position:relative;height:210px;background:#0d0a06;">'
@@ -210,7 +210,7 @@
 
   function STEP3(){
     var h=topflow("Paso 3 · "+st.service)+'<div class="up" style="padding:6px 16px;">';
-    h+='<div class="disp" style="font-size:40px;">¿CUÁNDO<br><span style="color:var(--gold2);">TE VIENE?</span></div><div style="height:2px;width:46px;background:var(--gold);margin:10px 0 18px;"></div>';
+    h+='<div class="disp" style="font-size:34px;white-space:nowrap;">¿CUÁNDO <span style="color:var(--gold2);">VENDRÍAS?</span></div><div style="height:2px;width:46px;background:var(--gold);margin:10px 0 18px;"></div>';
     for(var i=0;i<st.daysShown;i++){
       var d=WEEK[i],open=st.openDays.indexOf(i)>=0;
       h+='<div class="card" style="border-radius:13px;margin-bottom:11px;overflow:hidden;border-color:'+(open?'var(--gold)':'var(--line)')+';">';
@@ -239,7 +239,7 @@
   function attachCar(carId,dotsId){var car=document.getElementById(carId),dots=document.getElementById(dotsId);if(!car||!dots)return;car.addEventListener("scroll",function(){var cr=car.getBoundingClientRect(),cc=cr.left+cr.width/2,idx=0,min=1e9;for(var i=0;i<car.children.length;i++){var r=car.children[i].getBoundingClientRect(),c=r.left+r.width/2,dd=Math.abs(c-cc);if(dd<min){min=dd;idx=i;}}var act=idx%dots.children.length;for(var j=0;j<dots.children.length;j++){dots.children[j].className="dot"+(j===act?" on":"");}});}
 
   function autoScroll(carId){var car=document.getElementById(carId);if(!car||car.children.length<2)return;var paused=false,t,pos=0,SPEED=0.55;
-    function pause(){paused=true;clearTimeout(t);t=setTimeout(function(){paused=false;pos=car.scrollLeft;},1900);}
+    function pause(){paused=true;clearTimeout(t);t=setTimeout(function(){paused=false;pos=car.scrollLeft;},500);}
     car.addEventListener("pointerdown",pause);car.addEventListener("wheel",pause,{passive:true});car.addEventListener("touchstart",pause,{passive:true});car.addEventListener("touchmove",pause,{passive:true});
     function step(){if(!document.body.contains(car))return;
       if(paused){pos=car.scrollLeft;}else{var n=car.children.length/2,one=car.children[n].offsetLeft-car.children[0].offsetLeft;if(one>0){pos+=SPEED;if(pos>=one)pos-=one;car.scrollLeft=pos;}}
