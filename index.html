@@ -171,15 +171,12 @@
       screen.innerHTML=h;document.getElementById("pay").addEventListener("click",function(){st.step=6;render();});bindBack();
     }
     else if(s===6){
-      h=bars(6)+'<div class="up" style="padding:34px 16px 16px;text-align:center;">';
-      h+='<div style="width:96px;height:96px;margin:0 auto;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:48px;color:var(--gold2);"><i class="ti ti-check"></i></div>';
-      h+='<div class="disp" style="font-size:44px;margin-top:20px;">TURNO '+(st.deposit?'CONFIRMADO':'RESERVADO')+'</div><div style="font-size:13px;color:var(--dim);margin-top:4px;">Te esperamos, Santi.</div></div>';
-      h+='<div style="padding:0 16px;"><div class="card" style="border-radius:14px;padding:16px;margin-bottom:16px;">';
-      [["Barbero",st.barber||"Tomás"],["Servicio",st.service||"Corte"],["Día",st.day||"Hoy sáb 14"],["Hora",st.time||"10:30"]].forEach(function(r){h+='<div style="display:flex;justify-content:space-between;font-size:13px;padding:7px 0;"><span class="lab" style="font-size:10px;color:var(--dim);">'+r[0]+'</span><span style="font-family:\'Oswald\';font-weight:600;">'+r[1]+'</span></div>';});
+      h=bars(6)+'<div class="up" style="padding:16px;min-height:calc(100% - 30px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">';
+      h+='<div style="width:108px;height:108px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:54px;color:var(--gold2);box-shadow:0 0 44px rgba(212,175,55,0.25);"><i class="ti ti-check"></i></div>';
+      h+='<div class="disp" style="font-size:48px;margin-top:26px;">TURNO '+(st.deposit?'CONFIRMADO':'RESERVADO')+'</div>';
+      h+='<div style="font-size:15px;color:var(--dim);margin-top:10px;line-height:1.6;">Nos vemos '+(st.day||'pronto')+', <span style="color:var(--gold2);">Santi</span>.</div>';
+      h+='<button class="restart lab" style="margin-top:36px;color:var(--golddim);font-size:10px;">Volver al inicio</button>';
       h+='</div>';
-      h+='<button class="card" style="width:100%;border-radius:13px;padding:15px;font-family:\'Oswald\';font-weight:600;font-size:14px;letter-spacing:.5px;margin-bottom:11px;display:flex;align-items:center;justify-content:center;gap:9px;color:var(--gold2);"><i class="ti ti-calendar-plus"></i> Agregar al calendario</button>';
-      h+='<button style="width:100%;background:#1FA855;color:#fff;border-radius:13px;padding:15px;font-family:\'Oswald\';font-weight:600;font-size:14px;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;gap:9px;"><i class="ti ti-brand-whatsapp"></i> Confirmar por WhatsApp</button>';
-      h+='<div style="text-align:center;margin:18px 0 24px;"><button class="restart lab" style="color:var(--golddim);font-size:10px;">Volver al inicio</button></div></div>';
       screen.innerHTML=h;screen.querySelector(".restart").addEventListener("click",function(){st={view:"home",step:0,barber:null,service:null,day:null,time:null,deposit:false,daysShown:3,openDays:[0,1]};render();});
     }
   }
