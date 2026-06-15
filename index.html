@@ -20,6 +20,7 @@
   .disp{font-family:'Bebas Neue';letter-spacing:1px;line-height:.95;}
   .lab{font-family:'Oswald';font-weight:500;letter-spacing:3px;text-transform:uppercase;}
   .card{background:var(--s1);border:1px solid var(--line);}
+  .bcard,.ccard,.opt,.card,.profcard{border-radius:0 !important;border-color:#000 !important;}
   .goldbtn{background:linear-gradient(100deg,#caa12f,#E9C766 50%,#b8902a);color:#0a0805;font-family:'Oswald';font-weight:600;letter-spacing:1.5px;text-transform:uppercase;}
   .pop{animation:pop .18s ease;}@keyframes pop{0%{transform:scale(.94)}100%{transform:scale(1)}}
   @keyframes zoom{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
@@ -149,7 +150,7 @@
     else if(s===3){ STEP3(); return; }
     else if(s===4){
       h=topflow("Paso 4 · Confirmá")+'<div class="up" style="padding:6px 16px;min-height:calc(100% - 64px);display:flex;flex-direction:column;justify-content:center;">';
-      h+='<div style="background:linear-gradient(120deg,#1d1609,#0e0b06);border:1px solid var(--line);border-radius:15px;padding:18px;margin-bottom:20px;">'
+      h+='<div class="card" style="background:linear-gradient(120deg,#1d1609,#0e0b06);border:1px solid var(--line);border-radius:15px;padding:18px;margin-bottom:20px;">'
         +'<div style="display:flex;gap:12px;align-items:center;margin-bottom:16px;">'+gring("S",48)+'<div style="flex:1;"><div style="font-family:\'Oswald\';font-weight:600;font-size:17px;">Qué bueno tenerte de vuelta, Santi.</div><div style="font-size:11px;color:var(--dim);margin-top:2px;">Te tenemos presente — este es tu corte N°'+(VISITS+1)+'.</div></div></div>'
         +'<div class="lab" style="font-size:9px;color:var(--golddim);margin-bottom:7px;display:flex;justify-content:space-between;"><span>Tu progreso</span><span style="color:var(--gold2);">'+VISITS+' de '+GOAL+'</span></div>'
         +'<div style="height:9px;background:#0a0805;border:1px solid var(--line);border-radius:6px;overflow:hidden;"><div style="height:100%;width:'+Math.round(VISITS/GOAL*100)+'%;background:linear-gradient(90deg,#caa12f,#E9C766);"></div></div>'
