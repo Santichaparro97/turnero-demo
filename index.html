@@ -16,7 +16,6 @@
   #screen{height:100%;overflow-y:auto;scrollbar-width:none;}
   #screen::-webkit-scrollbar{display:none;}
   button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
-  input{font-family:'Inter';outline:none;}
   .disp{font-family:'Bebas Neue';letter-spacing:1px;line-height:.95;}
   .lab{font-family:'Oswald';font-weight:500;letter-spacing:3px;text-transform:uppercase;}
   .card{background:var(--s1);border:1px solid var(--line);}
@@ -28,9 +27,6 @@
   @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
   .up{animation:up .3s cubic-bezier(.22,1,.36,1);}@keyframes up{0%{transform:translateY(22px);opacity:0}100%{transform:translateY(0);opacity:1}}
   .acc{overflow:hidden;transition:max-height .32s cubic-bezier(.22,1,.36,1);}
-  .hsnap{display:flex;gap:11px;overflow-x:auto;scrollbar-width:none;padding:0 16px 4px;}
-  .hsnap::-webkit-scrollbar{display:none;}
-  .hsnap>*{flex:none;}
   .car{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:4px 13% 2px;}
   .car::-webkit-scrollbar{display:none;}
   .car>*{scroll-snap-align:center;flex:0 0 74%;}
@@ -59,7 +55,7 @@
     {n:"Nico",h:"clásico & barba",i:"NC",c:"280",r:"4.8",img:"turnero/barberos/Captura de pantalla 2026-06-14 211009.png",desc:"Corte clásico y arreglo de barba con navaja. Estilo atemporal y terminaciones limpias. Ideal si buscás algo sobrio y bien hecho."},
     {n:"Joaco",h:"urbano & color",i:"JC",c:"210",r:"5.0",img:"turnero/barberos/Captura de pantalla 2026-06-14 211020.png",desc:"Cortes urbanos, color y lo último en tendencias. Audaz y moderno. Para los que se animan a un cambio que se note."}
   ];
-  var services=[{n:"Corte",d:"30 min",p:"$6.000",dep:false,ic:"scissors",img:"turnero/cortes/1.png"},{n:"Corte + barba",d:"45 min",p:"$9.000",dep:false,ic:"razor",img:"turnero/cortes/2.png"},{n:"Diseño",d:"40 min",p:"$8.000",dep:false,ic:"wand",img:"turnero/cortes/3.png"}];
+  var services=[{n:"Corte",d:"30 min",p:"$6.000",img:"turnero/cortes/1.png"},{n:"Corte + barba",d:"45 min",p:"$9.000",img:"turnero/cortes/2.png"},{n:"Diseño",d:"40 min",p:"$8.000",img:"turnero/cortes/3.png"}];
   var cuts=[
     {t:"Fade + textura",l:"248",img:"turnero/cortes/Captura de pantalla 2026-06-14 210838.png",desc:"Degradé prolijo con textura arriba. Versátil, moderno y de bajo mantenimiento."},
     {t:"Mid fade",l:"301",img:"turnero/cortes/Captura de pantalla 2026-06-14 212233.png",desc:"Degradé medio, el equilibrio justo entre lo clásico y lo moderno."},
@@ -70,13 +66,11 @@
   var WEEK=[["HOY","sáb 14"],["MAÑANA","dom 15"],["PASADO","lun 16"],["MAR","17 jun"],["MIÉ","18 jun"],["JUE","19 jun"],["VIE","20 jun"]];
   var TIMES={base:["10:00","10:15","10:30","10:45","11:30","11:45","15:00","15:15","16:00","16:30"]};
   var VISITS=2,GOAL=3;
-  var STARS='';for(var _s=0;_s<5;_s++){STARS+='<i class="ti ti-star" style="color:var(--gold);font-size:12px;text-shadow:0 0 5px rgba(212,175,55,0.55);"></i>';}
-  var st={view:"home",step:0,barber:null,service:null,day:null,time:null,deposit:false,daysShown:3,openDays:[0,1]};
+  var st={view:"home",step:0,barber:null,service:null,day:null,time:null,daysShown:3,openDays:[0,1]};
 
   function gring(inner,size){size=size||64;return '<div style="width:'+size+'px;height:'+size+'px;border-radius:50%;padding:2px;background:conic-gradient(from 210deg,#E9C766,#7d6a30,#E9C766,#caa12f,#E9C766);flex:none;"><div style="width:100%;height:100%;border-radius:50%;background:#0a0805;display:flex;align-items:center;justify-content:center;font-family:\'Bebas Neue\';font-size:'+(size/2.6)+'px;color:var(--gold2);letter-spacing:1px;">'+inner+'</div></div>';}
   function bars(active){var h='<div style="display:flex;gap:5px;padding:15px 16px 7px;">';for(var i=0;i<4;i++){h+='<div style="flex:1;height:2px;background:'+(i<active?'var(--gold)':'rgba(212,175,55,0.18)')+';"></div>';}return h+'</div>';}
   function topflow(label){return bars(st.step)+'<div style="display:flex;align-items:center;justify-content:space-between;padding:2px 16px 12px;"><button class="bk" style="font-size:22px;color:var(--dim);"><i class="ti ti-chevron-left"></i></button><div class="lab" style="font-size:11px;color:var(--golddim);">'+label+'</div><div style="width:22px;"></div></div>';}
-  function goldBtn(txt,id){return '<button id="'+id+'" class="goldbtn" style="width:100%;padding:17px;border-radius:13px;font-size:16px;">'+txt+'</button>';}
   function chip(ic,txt){return '<span class="lab" style="font-size:10px;color:var(--gold2);background:rgba(212,175,55,0.07);border:1px solid rgba(212,175,55,0.45);padding:6px 11px;border-radius:4px;letter-spacing:1.5px;box-shadow:0 0 10px rgba(212,175,55,0.18),inset 0 0 8px rgba(212,175,55,0.06);"><i class="ti ti-'+ic+'" style="color:var(--gold);text-shadow:0 0 6px rgba(212,175,55,0.7);"></i> '+txt+'</span>';}
   function go(v,s){st.view=v;if(s!==undefined)st.step=s;render();}
 
@@ -134,7 +128,6 @@
       var scard=function(x,i){return '<button class="opt" data-v="'+i+'" style="display:block;text-align:left;overflow:hidden;border:1px solid var(--line);background:var(--s1);padding:0;">'
         +'<div style="position:relative;height:200px;background:#0d0a06;">'
           +'<img src="'+IMG(x.img)+'" alt="'+x.n+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 32%;">'
-          +(x.dep?'<span class="lab" style="position:absolute;top:12px;right:12px;font-size:8px;color:var(--gold2);background:rgba(0,0,0,.6);border:1px solid var(--line);padding:4px 8px;border-radius:4px;">con seña</span>':'')
         +'</div>'
         +'<div style="padding:14px 15px 15px;">'
           +'<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:8px;"><div class="disp" style="font-size:26px;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+x.n+'</div><div class="disp" style="font-size:25px;color:var(--gold2);white-space:nowrap;">'+x.p+'</div></div>'
@@ -146,7 +139,7 @@
       services.forEach(function(x,i){h+=scard(x,i);});
       h+='</div>';
       h+='<div class="dots" id="dotsS">';services.forEach(function(x,i){h+='<span class="dot'+(i===0?' on':'')+'"></span>';});h+='</div>';
-      h+='</div>';screen.innerHTML=h;wire(function(v){st.service=services[v].n;st.deposit=services[v].dep;st.step=3;st.daysShown=3;st.openDays=[0,1];render();});attachCar("carS","dotsS");autoScroll("carS");
+      h+='</div>';screen.innerHTML=h;wire(function(v){st.service=services[v].n;st.step=3;st.daysShown=3;st.openDays=[0,1];render();});attachCar("carS","dotsS");autoScroll("carS");
     }
     else if(s===3){ STEP3(); return; }
     else if(s===4){
@@ -171,7 +164,7 @@
       h+='<div style="font-size:15px;color:var(--dim);margin-top:10px;line-height:1.6;">Nos vemos '+(st.day||'pronto')+', <span style="color:var(--gold2);">Santi</span>.</div>';
       h+='<button class="restart lab" style="margin-top:36px;color:var(--golddim);font-size:10px;">Volver al inicio</button>';
       h+='</div>';
-      screen.innerHTML=h;screen.querySelector(".restart").addEventListener("click",function(){st={view:"home",step:0,barber:null,service:null,day:null,time:null,deposit:false,daysShown:3,openDays:[0,1]};render();});
+      screen.innerHTML=h;screen.querySelector(".restart").addEventListener("click",function(){st={view:"home",step:0,barber:null,service:null,day:null,time:null,daysShown:3,openDays:[0,1]};render();});
     }
   }
 
@@ -203,7 +196,10 @@
     bindBack();
   }
 
-  function attachCar(carId,dotsId){var car=document.getElementById(carId),dots=document.getElementById(dotsId);if(!car||!dots)return;car.addEventListener("scroll",function(){var cr=car.getBoundingClientRect(),cc=cr.left+cr.width/2,idx=0,min=1e9;for(var i=0;i<car.children.length;i++){var r=car.children[i].getBoundingClientRect(),c=r.left+r.width/2,dd=Math.abs(c-cc);if(dd<min){min=dd;idx=i;}}var act=idx%dots.children.length;for(var j=0;j<dots.children.length;j++){dots.children[j].className="dot"+(j===act?" on":"");}});}
+  function attachCar(carId,dotsId){var car=document.getElementById(carId),dots=document.getElementById(dotsId);if(!car||!dots)return;var n=dots.children.length,last=-1,tick=0;
+    car.addEventListener("scroll",function(){var now=Date.now();if(now-tick<90)return;tick=now;var ch=car.children;if(ch.length<2)return;var stride=ch[1].offsetLeft-ch[0].offsetLeft;if(stride<=0)return;
+      var center=car.scrollLeft+car.clientWidth/2,idx=Math.round((center-(ch[0].offsetLeft+ch[0].offsetWidth/2))/stride);idx=((idx%n)+n)%n;
+      if(idx===last)return;last=idx;for(var j=0;j<n;j++)dots.children[j].className="dot"+(j===idx?" on":"");},{passive:true});}
 
   function autoScroll(carId,dir){var car=document.getElementById(carId);if(!car||car.children.length<2)return;dir=dir||1;var paused=false,t,pos=0,SPEED=0.55,init=false;
     function pause(){paused=true;clearTimeout(t);t=setTimeout(function(){paused=false;pos=car.scrollLeft;},500);}
