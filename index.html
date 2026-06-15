@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turnero · negro & dorado</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.7.0/dist/tabler-icons.min.css" rel="stylesheet">
+<style>
+  :root{--bg:#0a0805;--s1:#141009;--s2:#1b150d;--gold:#D4AF37;--gold2:#E9C766;--golddim:#7d6a30;--txt:#F2ECE0;--dim:#9a8f7d;--line:rgba(212,175,55,0.20);}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{margin:0;min-height:100vh;background:#000;font-family:'Inter',sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px 0;gap:12px;overflow-x:hidden;}
+  body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 50% 0%,#1a140a,#000 72%);}
+  .tag{font-family:'Oswald';letter-spacing:6px;font-size:11px;color:var(--golddim);text-transform:uppercase;z-index:1;}
+  #phone{position:relative;z-index:1;width:372px;height:788px;background:var(--bg);border:1px solid var(--line);border-radius:32px;overflow:hidden;color:var(--txt);box-shadow:0 40px 120px rgba(0,0,0,.8),inset 0 0 0 1px rgba(0,0,0,.4);}
+  #screen{height:100%;overflow-y:auto;scrollbar-width:none;}
+  #screen::-webkit-scrollbar{display:none;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+  input{font-family:'Inter';outline:none;}
+  .disp{font-family:'Bebas Neue';letter-spacing:1px;line-height:.95;}
+  .lab{font-family:'Oswald';font-weight:500;letter-spacing:3px;text-transform:uppercase;}
+  .card{background:var(--s1);border:1px solid var(--line);}
+  .goldbtn{background:linear-gradient(100deg,#caa12f,#E9C766 50%,#b8902a);color:#0a0805;font-family:'Oswald';font-weight:600;letter-spacing:1.5px;text-transform:uppercase;}
+  .pop{animation:pop .18s ease;}@keyframes pop{0%{transform:scale(.94)}100%{transform:scale(1)}}
+  @keyframes zoom{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
+  @keyframes fade{0%{opacity:0}100%{opacity:1}}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+  .up{animation:up .3s cubic-bezier(.22,1,.36,1);}@keyframes up{0%{transform:translateY(22px);opacity:0}100%{transform:translateY(0);opacity:1}}
+  .acc{overflow:hidden;transition:max-height .32s cubic-bezier(.22,1,.36,1);}
+  .hsnap{display:flex;gap:11px;overflow-x:auto;scrollbar-width:none;padding:0 16px 4px;}
+  .hsnap::-webkit-scrollbar{display:none;}
+  .hsnap>*{flex:none;}
+  .car{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:4px 13% 2px;}
+  .car::-webkit-scrollbar{display:none;}
+  .car>*{scroll-snap-align:center;flex:0 0 74%;}
+  .dots{display:flex;gap:6px;justify-content:center;padding:11px 0 2px;}
+  .dot{width:6px;height:6px;border-radius:50%;background:rgba(212,175,55,0.28);transition:width .2s,background .2s;}
+  .dot.on{background:var(--gold);width:18px;border-radius:3px;}
+  .hint{font-size:11px;color:#5a5346;z-index:1;}
+</style>
+</head>
+<body>
+  <div class="tag">turnero</div>
+  <div id="phone"><div id="screen"></div></div>
+  <div class="hint">Tocá una historia de barbero o "Reservar" · en el paso 3 abrí un día y mirá "+ 3 días"</div>
+
+<script>
+(function(){
+  var screen=document.getElementById("screen");
+  var IMG=function(p){return encodeURI(p);};
+  var barbers=[
+    {n:"Tomás",h:"fades & diseños",i:"TM",c:"320",r:"4.9",img:"turnero/barberos/Captura de pantalla 2026-06-14 211003.png",desc:"Especialista en fades y diseños con máquina. Trabajo prolijo, detallista y al milímetro. Te asesora según tu cara y tu estilo."},
+    {n:"Nico",h:"clásico & barba",i:"NC",c:"280",r:"4.8",img:"turnero/barberos/Captura de pantalla 2026-06-14 211009.png",desc:"Corte clásico y arreglo de barba con navaja. Estilo atemporal y terminaciones limpias. Ideal si buscás algo sobrio y bien hecho."},
+    {n:"Joaco",h:"urbano & color",i:"JC",c:"210",r:"5.0",img:"turnero/barberos/Captura de pantalla 2026-06-14 211020.png",desc:"Cortes urbanos, color y lo último en tendencias. Audaz y moderno. Para los que se animan a un cambio que se note."}
+  ];
+  var services=[{n:"Corte",d:"30 min",p:"$6.000",dep:false,ic:"scissors",img:"turnero/cortes/1.png"},{n:"Corte + barba",d:"45 min",p:"$9.000",dep:true,ic:"razor",img:"turnero/cortes/2.png"},{n:"Diseño",d:"40 min",p:"$8.000",dep:true,ic:"wand",img:"turnero/cortes/3.png"}];
+  var cuts=[
+    {t:"Fade + textura",l:"248",img:"turnero/cortes/Captura de pantalla 2026-06-14 210838.png"},
+    {t:"Mid fade",l:"301",img:"turnero/cortes/Captura de pantalla 2026-06-14 212233.png"},
+    {t:"Diseño & líneas",l:"412",img:"turnero/cortes/Captura de pantalla 2026-06-14 212252.png"},
+    {t:"Texturizado",l:"189",img:"turnero/cortes/Captura de pantalla 2026-06-14 212258.png"},
+    {t:"Corte urbano",l:"223",img:"turnero/cortes/Captura de pantalla 2026-06-14 212309.png"}
+  ];
+  var WEEK=[["HOY","sáb 14"],["MAÑANA","dom 15"],["PASADO","lun 16"],["MAR","17 jun"],["MIÉ","18 jun"],["JUE","19 jun"],["VIE","20 jun"]];
+  var TIMES={base:["10:00","10:15","10:30","10:45","11:30","11:45","15:00","15:15","16:00","16:30"]};
+  var VISITS=2,GOAL=3;
+  var STARS='';for(var _s=0;_s<5;_s++){STARS+='<i class="ti ti-star" style="color:var(--gold);font-size:12px;text-shadow:0 0 5px rgba(212,175,55,0.55);"></i>';}
+  var st={view:"home",step:0,barber:null,service:null,day:null,time:null,deposit:false,daysShown:3,openDays:[0,1]};
+
+  function gring(inner,size){size=size||64;return '<div style="width:'+size+'px;height:'+size+'px;border-radius:50%;padding:2px;background:conic-gradient(from 210deg,#E9C766,#7d6a30,#E9C766,#caa12f,#E9C766);flex:none;"><div style="width:100%;height:100%;border-radius:50%;background:#0a0805;display:flex;align-items:center;justify-content:center;font-family:\'Bebas Neue\';font-size:'+(size/2.6)+'px;color:var(--gold2);letter-spacing:1px;">'+inner+'</div></div>';}
+  function bars(active){var h='<div style="display:flex;gap:5px;padding:15px 16px 7px;">';for(var i=0;i<6;i++){h+='<div style="flex:1;height:2px;background:'+(i<active?'var(--gold)':'rgba(212,175,55,0.18)')+';"></div>';}return h+'</div>';}
+  function topflow(label){return bars(st.step)+'<div style="display:flex;align-items:center;justify-content:space-between;padding:2px 16px 12px;"><button class="bk" style="font-size:22px;color:var(--dim);"><i class="ti ti-chevron-left"></i></button><div class="lab" style="font-size:11px;color:var(--golddim);">'+label+'</div><div style="width:22px;"></div></div>';}
+  function goldBtn(txt,id){return '<button id="'+id+'" class="goldbtn" style="width:100%;padding:17px;border-radius:13px;font-size:16px;">'+txt+'</button>';}
+  function chip(ic,txt){return '<span class="lab" style="font-size:10px;color:var(--gold2);background:rgba(212,175,55,0.07);border:1px solid rgba(212,175,55,0.45);padding:6px 11px;border-radius:4px;letter-spacing:1.5px;box-shadow:0 0 10px rgba(212,175,55,0.18),inset 0 0 8px rgba(212,175,55,0.06);"><i class="ti ti-'+ic+'" style="color:var(--gold);text-shadow:0 0 6px rgba(212,175,55,0.7);"></i> '+txt+'</span>';}
+  function go(v,s){st.view=v;if(s!==undefined)st.step=s;render();}
+
+  function HOME(){
+    var h='<div class="up">';
+    h+='<div style="display:flex;align-items:center;justify-content:flex-end;padding:16px 16px 4px;"><i class="ti ti-menu-2" style="font-size:22px;color:var(--dim);"></i></div>';
+    h+='<div style="display:flex;align-items:center;gap:18px;padding:8px 16px 0;">'+'<div style="width:84px;height:84px;border-radius:50%;padding:2px;background:conic-gradient(from 210deg,#E9C766,#7d6a30,#E9C766,#caa12f,#E9C766);flex:none;"><div style="width:100%;height:100%;border-radius:50%;overflow:hidden;background:#0a0805;"><img src="'+IMG("turnero/logo.png")+'" alt="FB Barbería" style="width:100%;height:100%;object-fit:cover;object-position:50% 34%;"></div></div>';
+    h+='<div style="flex:1;"><div class="disp" style="font-size:23px;text-align:center;letter-spacing:1px;margin-bottom:9px;">FADE BROS</div><div style="display:flex;justify-content:space-around;text-align:center;">';
+    [["1.2k","cortes"],["3","barberos"],["4.9","rating"]].forEach(function(s){h+='<div><div class="disp" style="font-size:24px;color:var(--gold2);">'+s[0]+'</div><div class="lab" style="font-size:9px;color:var(--dim);">'+s[1]+'</div></div>';});
+    h+='</div></div></div>';
+    h+='<div style="text-align:center;padding:18px 20px 0;">'
+      +'<div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;padding:7px 14px;border-radius:20px;background:rgba(57,255,20,0.08);border:1px solid rgba(57,255,20,0.35);"><span style="width:9px;height:9px;border-radius:50%;background:#39FF14;box-shadow:0 0 8px #39FF14,0 0 16px rgba(57,255,20,0.8);animation:pulse 1.5s infinite;"></span><span class="lab" style="font-size:10px;color:#8CFFA8;letter-spacing:2px;">Abierto ahora</span></div>'
+      +'<div class="disp" style="font-size:40px;line-height:.92;">RESERVA RÁPIDA<br><span style="color:var(--gold2);">¿CON QUIÉN TE CORTÁS?</span></div>'
+      +'<div style="font-size:12.5px;color:var(--dim);margin-top:12px;line-height:1.6;max-width:280px;margin-left:auto;margin-right:auto;">Elegí tu barbero, tu día y tu horario en menos de un minuto.</div>'
+    +'</div>';
+    h+='<div style="display:flex;gap:7px;padding:14px 16px 4px;justify-content:center;flex-wrap:wrap;">'+chip("map-pin","Palermo")+chip("clock","Lun a Sáb")+chip("flame","desde 2019")+'</div>';
+
+    h+='<div class="lab" style="font-size:10px;color:var(--golddim);text-align:center;padding:10px 16px 2px;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="ti ti-arrows-horizontal" style="color:var(--gold);"></i> Deslizá y elegí tu barbero</div>';
+    var bcard=function(b,i){return '<button class="bcard" data-i="'+i+'" style="display:block;text-align:left;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--s1);padding:0;">'
+      +'<div style="position:relative;height:228px;background:#0d0a06;">'
+        +'<img src="'+IMG(b.img)+'" alt="'+b.n+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;">'
+        +'<span class="lab" style="position:absolute;top:12px;left:12px;font-size:8px;color:var(--gold2);background:rgba(0,0,0,.5);border:1px solid var(--line);padding:4px 8px;border-radius:4px;">Barbero</span>'
+        +'<i class="ti ti-cut" style="position:absolute;top:13px;right:14px;color:var(--gold);font-size:18px;text-shadow:0 1px 4px rgba(0,0,0,.8);"></i>'
+        +'<div style="position:absolute;left:0;right:0;bottom:0;padding:18px 16px 14px;background:linear-gradient(transparent,rgba(0,0,0,.92));">'
+          +'<div class="disp" style="font-size:36px;">'+b.n+'</div><div class="lab" style="font-size:10px;color:var(--dim);margin-top:1px;">'+b.h+'</div>'
+        +'</div></div>'
+      +'<div style="padding:12px 15px 14px;">'
+        +'<div style="display:flex;align-items:center;justify-content:space-between;">'
+          +'<span class="lab" style="font-size:13px;color:var(--gold2);white-space:nowrap;">Ver perfil</span>'
+          +'<i class="ti ti-arrow-up-right" style="color:var(--gold);font-size:17px;"></i>'
+        +'</div>'
+        +'<div style="display:flex;align-items:center;gap:2px;margin-top:7px;">'+STARS+'<span class="lab" style="font-size:10px;color:var(--dim);margin-left:6px;">'+b.r+' · '+b.c+' cortes</span></div>'
+      +'</div></button>';};
+    h+='<div class="car" id="carB" style="scroll-snap-type:none;">';
+    barbers.forEach(function(b,i){h+=bcard(b,i);});
+    barbers.forEach(function(b,i){h+=bcard(b,i);});
+    h+='</div>';
+    h+='<div class="dots" id="dotsB">';barbers.forEach(function(b,i){h+='<span class="dot'+(i===0?' on':'')+'"></span>';});h+='</div>';
+
+    h+='<div class="lab" style="display:flex;align-items:center;justify-content:center;gap:7px;padding:22px 16px 4px;margin-top:8px;color:var(--dim);font-size:10px;border-top:1px solid var(--line);"><i class="ti ti-photo" style="color:var(--gold);"></i> Lo que hacemos</div>';
+    var ccard=function(c,i){return '<div class="ccard" style="border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--s1);">'
+      +'<div style="position:relative;height:238px;background:#0d0a06;">'
+        +'<img src="'+IMG(c.img)+'" alt="'+c.t+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%;">'
+        +'<i class="ti ti-cut" style="position:absolute;top:14px;right:15px;color:var(--gold);font-size:18px;text-shadow:0 1px 4px rgba(0,0,0,.8);"></i>'
+        +'<div class="disp" style="position:absolute;left:16px;bottom:12px;font-size:26px;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.9);">0'+((i%cuts.length)+1)+'</div>'
+      +'</div>'
+      +'<div style="padding:12px 15px 14px;"><div style="display:flex;align-items:center;gap:7px;color:var(--gold);font-size:17px;"><i class="ti ti-heart"></i><span style="font-size:12px;color:var(--dim);">'+c.l+' me gusta</span></div>'
+      +'<div style="font-family:\'Oswald\';font-weight:600;font-size:14px;margin-top:5px;color:var(--txt);">'+c.t+'</div></div>'
+    +'</div>';};
+    h+='<div class="car" id="carC" style="scroll-snap-type:none;">';
+    cuts.forEach(function(c,i){h+=ccard(c,i);});
+    cuts.forEach(function(c,i){h+=ccard(c,i);});
+    h+='</div>';
+    h+='<div class="dots" id="dotsC" style="padding-bottom:20px;">';cuts.forEach(function(c,i){h+='<span class="dot'+(i===0?' on':'')+'"></span>';});h+='</div>';
+
+    screen.innerHTML=h;screen.scrollTop=0;
+    Array.prototype.forEach.call(screen.querySelectorAll(".bcard"),function(el){el.addEventListener("click",function(){openProfile(+el.getAttribute("data-i"));});});
+    attachCar("carB","dotsB");attachCar("carC","dotsC");autoScroll("carB");autoScroll("carC");
+  }
+
+  function FLOW(){
+    var s=st.step,h="";
+    if(s===1){
+      h=topflow("Paso 1 de 6")+'<div class="up" style="padding:6px 16px;">';
+      h+='<div class="disp" style="font-size:40px;color:var(--txt);">ELEGÍ TU<br><span style="color:var(--gold2);">BARBERO</span></div><div style="height:2px;width:46px;background:var(--gold);margin:10px 0 22px;"></div>';
+      barbers.forEach(function(b,i){h+='<button class="opt card" data-v="'+b.n+'" style="width:100%;display:flex;align-items:center;gap:14px;padding:14px;border-radius:13px;margin-bottom:12px;text-align:left;">'+gring(b.i,54)+'<div style="flex:1;"><div style="font-family:\'Oswald\';font-weight:600;font-size:17px;">'+b.n+'</div><div class="lab" style="font-size:10px;color:var(--dim);margin-top:2px;">'+b.h+'</div></div><i class="ti ti-arrow-right" style="color:var(--gold);font-size:20px;"></i></button>';});
+      h+='</div>';screen.innerHTML=h;wire(function(v){st.barber=v;st.step=2;render();});
+    }
+    else if(s===2){
+      h=topflow("Paso 2 · "+st.barber)+'<div class="up" style="padding:6px 0;min-height:calc(100% - 64px);display:flex;flex-direction:column;justify-content:center;">';
+      h+='<div style="padding:0 16px;"><div class="disp" style="font-size:38px;white-space:nowrap;">¿QUÉ TE <span style="color:var(--gold2);">HACÉS?</span></div><div style="height:2px;width:46px;background:var(--gold);margin:10px 0 4px;"></div></div>';
+      h+='<div class="lab" style="font-size:10px;color:var(--golddim);text-align:center;padding:10px 16px 2px;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="ti ti-arrows-horizontal" style="color:var(--gold);"></i> Deslizá y elegí el servicio</div>';
+      var scard=function(x,i){return '<button class="opt" data-v="'+i+'" style="display:block;text-align:left;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--s1);padding:0;">'
+        +'<div style="position:relative;height:210px;background:#0d0a06;">'
+          +'<img src="'+IMG(x.img)+'" alt="'+x.n+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 32%;">'
+          +(x.dep?'<span class="lab" style="position:absolute;top:12px;right:12px;font-size:8px;color:var(--gold2);background:rgba(0,0,0,.6);border:1px solid var(--line);padding:4px 8px;border-radius:4px;">con seña</span>':'')
+        +'</div>'
+        +'<div style="padding:14px 15px 15px;">'
+          +'<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:8px;"><div class="disp" style="font-size:26px;line-height:1;">'+x.n+'</div><div class="disp" style="font-size:25px;color:var(--gold2);">'+x.p+'</div></div>'
+          +'<div class="lab" style="font-size:10px;color:var(--dim);margin-top:5px;"><i class="ti ti-clock" style="color:var(--gold);"></i> '+x.d+'</div>'
+          +'<div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;"><span class="lab" style="font-size:12px;color:var(--gold2);">Elegir</span><i class="ti ti-arrow-right" style="color:var(--gold);font-size:17px;"></i></div>'
+        +'</div></button>';};
+      h+='<div class="car" id="carS" style="scroll-snap-type:none;">';
+      services.forEach(function(x,i){h+=scard(x,i);});
+      services.forEach(function(x,i){h+=scard(x,i);});
+      h+='</div>';
+      h+='<div class="dots" id="dotsS">';services.forEach(function(x,i){h+='<span class="dot'+(i===0?' on':'')+'"></span>';});h+='</div>';
+      h+='</div>';screen.innerHTML=h;wire(function(v){st.service=services[v].n;st.deposit=services[v].dep;st.step=3;st.daysShown=3;st.openDays=[0,1];render();});attachCar("carS","dotsS");autoScroll("carS");
+    }
+    else if(s===3){ STEP3(); return; }
+    else if(s===4){
+      h=topflow("Paso 4 · Tus datos")+'<div class="up" style="padding:6px 16px;">';
+      h+='<div style="background:linear-gradient(120deg,#1d1609,#0e0b06);border:1px solid var(--line);border-radius:15px;padding:16px;margin-bottom:16px;">'
+        +'<div style="display:flex;gap:12px;align-items:center;margin-bottom:15px;">'+gring("S",46)+'<div style="flex:1;"><div style="font-family:\'Oswald\';font-weight:600;font-size:16px;">Qué bueno tenerte de vuelta, Santi.</div><div style="font-size:11px;color:var(--dim);margin-top:2px;">Te tenemos presente — este es tu corte N°'+(VISITS+1)+'.</div></div></div>'
+        +'<div class="lab" style="font-size:9px;color:var(--golddim);margin-bottom:7px;display:flex;justify-content:space-between;"><span>Tu progreso</span><span style="color:var(--gold2);">'+VISITS+' de '+GOAL+'</span></div>'
+        +'<div style="height:9px;background:#0a0805;border:1px solid var(--line);border-radius:6px;overflow:hidden;"><div style="height:100%;width:'+Math.round(VISITS/GOAL*100)+'%;background:linear-gradient(90deg,#caa12f,#E9C766);"></div></div>'
+        +'<div style="display:flex;align-items:center;gap:6px;margin-top:9px;font-size:11px;color:var(--dim);"><i class="ti ti-gift" style="color:var(--gold);"></i> Falta <b style="color:var(--gold2);">1 corte</b> para tu beneficio.</div>'
+      +'</div>';
+      h+='<button class="opt goldbtn" data-v="repeat" style="width:100%;padding:12px;border-radius:11px;font-size:13px;margin-bottom:18px;"><i class="ti ti-rotate-clockwise-2"></i> Repetir mi último: Corte con Tomás</button>';
+      h+='<div class="lab" style="font-size:10px;color:var(--dim);margin:0 2px 6px;">Nombre</div><input value="Santi" style="width:100%;background:var(--s1);border:1px solid var(--line);border-radius:12px;padding:14px;color:var(--txt);font-size:15px;margin-bottom:13px;">';
+      h+='<div class="lab" style="font-size:10px;color:var(--dim);margin:0 2px 6px;">WhatsApp</div><input value="+54 9 11 5555-0123" style="width:100%;background:var(--s1);border:1px solid var(--line);border-radius:12px;padding:14px;color:var(--txt);font-size:15px;margin-bottom:22px;">';
+      h+=goldBtn("Continuar &nbsp;<i class=\"ti ti-arrow-right\"></i>","cont")+'</div>';
+      screen.innerHTML=h;var f=function(){st.step=st.deposit?5:6;render();};
+      Array.prototype.forEach.call(screen.querySelectorAll(".opt"),function(el){el.addEventListener("click",f);});
+      document.getElementById("cont").addEventListener("click",f);bindBack();
+    }
+    else if(s===5){
+      h=topflow("Paso 5 · Seña")+'<div class="up" style="padding:6px 16px;">';
+      h+='<div class="disp" style="font-size:40px;">RESERVÁ<br><span style="color:var(--gold2);">CON SEÑA</span></div><div style="font-size:12px;color:var(--dim);margin:12px 0 20px;">Tomás pide una seña para guardar el turno.</div>';
+      h+='<div class="card" style="border-radius:14px;padding:18px;margin-bottom:14px;">';
+      [["Servicio",st.service],["Total","$9.000"]].forEach(function(r){h+='<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--dim);margin-bottom:9px;"><span>'+r[0]+'</span><span style="color:var(--txt);">'+r[1]+'</span></div>';});
+      h+='<div style="display:flex;justify-content:space-between;align-items:center;padding-top:11px;border-top:1px solid var(--line);"><span class="lab" style="font-size:11px;">Seña ahora</span><span class="disp" style="font-size:30px;color:var(--gold2);">$3.000</span></div></div>';
+      h+='<div style="display:flex;gap:10px;align-items:center;font-size:12px;color:var(--dim);background:var(--s1);border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:20px;"><i class="ti ti-clock-bolt" style="color:var(--gold);font-size:20px;"></i> Te guardamos el horario <b style="color:var(--txt);">10 minutos</b> mientras pagás.</div>';
+      h+='<button id="pay" class="goldbtn" style="width:100%;padding:17px;border-radius:13px;font-size:15px;"><i class="ti ti-credit-card"></i> Pagar seña con MercadoPago</button>';
+      h+='<div style="text-align:center;font-size:11px;color:var(--golddim);margin-top:13px;">El pago va directo a la cuenta de Tomás</div></div>';
+      screen.innerHTML=h;document.getElementById("pay").addEventListener("click",function(){st.step=6;render();});bindBack();
+    }
+    else if(s===6){
+      h=bars(6)+'<div class="up" style="padding:34px 16px 16px;text-align:center;">';
+      h+='<div style="width:96px;height:96px;margin:0 auto;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:48px;color:var(--gold2);"><i class="ti ti-check"></i></div>';
+      h+='<div class="disp" style="font-size:44px;margin-top:20px;">TURNO '+(st.deposit?'CONFIRMADO':'RESERVADO')+'</div><div style="font-size:13px;color:var(--dim);margin-top:4px;">Te esperamos, Santi.</div></div>';
+      h+='<div style="padding:0 16px;"><div class="card" style="border-radius:14px;padding:16px;margin-bottom:16px;">';
+      [["Barbero",st.barber||"Tomás"],["Servicio",st.service||"Corte"],["Día",st.day||"Hoy sáb 14"],["Hora",st.time||"10:30"]].forEach(function(r){h+='<div style="display:flex;justify-content:space-between;font-size:13px;padding:7px 0;"><span class="lab" style="font-size:10px;color:var(--dim);">'+r[0]+'</span><span style="font-family:\'Oswald\';font-weight:600;">'+r[1]+'</span></div>';});
+      h+='</div>';
+      h+='<button class="card" style="width:100%;border-radius:13px;padding:15px;font-family:\'Oswald\';font-weight:600;font-size:14px;letter-spacing:.5px;margin-bottom:11px;display:flex;align-items:center;justify-content:center;gap:9px;color:var(--gold2);"><i class="ti ti-calendar-plus"></i> Agregar al calendario</button>';
+      h+='<button style="width:100%;background:#1FA855;color:#fff;border-radius:13px;padding:15px;font-family:\'Oswald\';font-weight:600;font-size:14px;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;gap:9px;"><i class="ti ti-brand-whatsapp"></i> Confirmar por WhatsApp</button>';
+      h+='<div style="text-align:center;margin:18px 0 24px;"><button class="restart lab" style="color:var(--golddim);font-size:10px;">Volver al inicio</button></div></div>';
+      screen.innerHTML=h;screen.querySelector(".restart").addEventListener("click",function(){st={view:"home",step:0,barber:null,service:null,day:null,time:null,deposit:false,daysShown:3,openDays:[0,1]};render();});
+    }
+  }
+
+  function STEP3(){
+    var h=topflow("Paso 3 · "+st.service)+'<div class="up" style="padding:6px 16px;">';
+    h+='<div class="disp" style="font-size:40px;">¿CUÁNDO<br><span style="color:var(--gold2);">TE VIENE?</span></div><div style="height:2px;width:46px;background:var(--gold);margin:10px 0 18px;"></div>';
+    for(var i=0;i<st.daysShown;i++){
+      var d=WEEK[i],open=st.openDays.indexOf(i)>=0;
+      h+='<div class="card" style="border-radius:13px;margin-bottom:11px;overflow:hidden;border-color:'+(open?'var(--gold)':'var(--line)')+';">';
+      h+='<button class="dayhd" data-i="'+i+'" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;text-align:left;">'
+        +'<div style="display:flex;align-items:baseline;gap:10px;"><span class="disp" style="font-size:26px;color:'+(open?'var(--gold2)':'var(--txt)')+';">'+d[0]+'</span><span class="lab" style="font-size:10px;color:var(--dim);">'+d[1]+'</span></div>'
+        +(open?'<i class="ti ti-chevron-up" style="color:var(--gold);font-size:20px;"></i>':'<span class="lab" style="font-size:9px;color:var(--gold2);display:flex;align-items:center;gap:4px;">Ver horarios <i class="ti ti-chevron-down" style="font-size:16px;"></i></span>')+'</button>';
+      h+='<div class="acc" style="max-height:'+(open?'380px':'0')+';">';
+      h+='<div style="padding:2px 14px 16px;"><div class="lab" style="font-size:9px;color:var(--golddim);margin:0 2px 10px;">Horarios libres · cada 15 min</div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">';
+      var taken=i===0?["11:30","15:15"]:(i===1?["10:15"]:[]);
+      TIMES.base.forEach(function(t){var off=taken.indexOf(t)>=0;h+='<button class="slot" '+(off?'disabled':'data-t="'+t+'" data-day="'+i+'"')+' style="padding:11px 0;border-radius:9px;font-family:\'Oswald\';font-weight:600;font-size:14px;'+(off?'background:transparent;color:#4a4438;text-decoration:line-through;border:1px solid rgba(212,175,55,0.08);':'background:var(--s2);border:1px solid var(--line);color:var(--txt);')+'">'+t+'</button>';});
+      h+='</div></div></div></div>';
+    }
+    if(st.daysShown<7){
+      h+='<button id="more" class="lab" style="width:100%;padding:14px;border-radius:12px;border:1px dashed var(--line);color:var(--gold2);font-size:11px;background:transparent;margin-top:2px;"><i class="ti ti-calendar-plus"></i> Ver 3 días más</button>';
+    } else {
+      h+='<div class="lab" style="text-align:center;font-size:10px;color:var(--golddim);padding:12px;">Hasta 1 semana de anticipación</div>';
+    }
+    h+='</div>';
+    screen.innerHTML=h;
+    Array.prototype.forEach.call(screen.querySelectorAll(".dayhd"),function(el){el.addEventListener("click",function(){var i=+el.getAttribute("data-i"),k=st.openDays.indexOf(i);if(k>=0)st.openDays.splice(k,1);else st.openDays.push(i);render();});});
+    Array.prototype.forEach.call(screen.querySelectorAll(".slot[data-t]"),function(el){el.addEventListener("click",function(){el.classList.add("pop");el.style.background="linear-gradient(100deg,#caa12f,#E9C766)";el.style.color="#0a0805";var d=WEEK[+el.getAttribute("data-day")];st.day=d[0].charAt(0)+d[0].slice(1).toLowerCase()+" "+d[1];st.time=el.getAttribute("data-t");setTimeout(function(){st.step=4;render();},170);});});
+    var m=document.getElementById("more");if(m)m.addEventListener("click",function(){st.daysShown=Math.min(7,st.daysShown+3);render();});
+    bindBack();
+  }
+
+  function attachCar(carId,dotsId){var car=document.getElementById(carId),dots=document.getElementById(dotsId);if(!car||!dots)return;car.addEventListener("scroll",function(){var cr=car.getBoundingClientRect(),cc=cr.left+cr.width/2,idx=0,min=1e9;for(var i=0;i<car.children.length;i++){var r=car.children[i].getBoundingClientRect(),c=r.left+r.width/2,dd=Math.abs(c-cc);if(dd<min){min=dd;idx=i;}}var act=idx%dots.children.length;for(var j=0;j<dots.children.length;j++){dots.children[j].className="dot"+(j===act?" on":"");}});}
+
+  function autoScroll(carId){var car=document.getElementById(carId);if(!car||car.children.length<2)return;var paused=false,t,pos=0,SPEED=0.55;
+    function pause(){paused=true;clearTimeout(t);t=setTimeout(function(){paused=false;pos=car.scrollLeft;},1900);}
+    car.addEventListener("pointerdown",pause);car.addEventListener("wheel",pause,{passive:true});car.addEventListener("touchstart",pause,{passive:true});car.addEventListener("touchmove",pause,{passive:true});
+    function step(){if(!document.body.contains(car))return;
+      if(paused){pos=car.scrollLeft;}else{var n=car.children.length/2,one=car.children[n].offsetLeft-car.children[0].offsetLeft;if(one>0){pos+=SPEED;if(pos>=one)pos-=one;car.scrollLeft=pos;}}
+      requestAnimationFrame(step);}
+    requestAnimationFrame(step);}
+
+  function openProfile(i){var b=barbers[i],ov=document.createElement("div");
+    ov.style.cssText="position:absolute;inset:0;z-index:40;background:rgba(5,4,2,0.62);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;animation:fade .2s ease;";
+    var card='<div class="profcard" style="position:relative;width:86%;height:70%;background:#0a0805;border:1px solid var(--gold);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.7);animation:zoom .26s cubic-bezier(.22,1,.36,1);">'
+      +'<button class="close" aria-label="Cerrar" style="position:absolute;top:12px;right:12px;z-index:3;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid var(--line);color:var(--txt);font-size:19px;display:flex;align-items:center;justify-content:center;"><i class="ti ti-x"></i></button>'
+      +'<div style="position:relative;height:55%;background:#0d0a06;">'
+        +'<img src="'+IMG(b.img)+'" alt="'+b.n+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;">'
+        +'<div style="position:absolute;left:0;right:0;bottom:0;padding:20px 18px 16px;background:linear-gradient(transparent,rgba(0,0,0,.94));">'
+          +'<span class="lab" style="font-size:9px;color:var(--gold2);">Barbero</span>'
+          +'<div class="disp" style="font-size:48px;line-height:.95;">'+b.n+'</div>'
+          +'<div class="lab" style="font-size:11px;color:var(--dim);margin-top:3px;"><i class="ti ti-cut" style="color:var(--gold);"></i> '+b.c+' cortes · <i class="ti ti-star" style="color:var(--gold);"></i> '+b.r+'</div>'
+        +'</div></div>'
+      +'<div style="flex:1;padding:16px 18px 18px;display:flex;flex-direction:column;min-height:0;">'
+        +'<div class="lab" style="font-size:9px;color:var(--golddim);margin-bottom:8px;">'+b.h+'</div>'
+        +'<p style="font-size:13px;color:var(--dim);line-height:1.65;margin:0;overflow:auto;">'+b.desc+'</p>'
+        +'<div style="margin-top:auto;padding-top:16px;"><button class="conf goldbtn" style="width:100%;padding:16px;border-radius:13px;font-size:16px;">Confirmar a '+b.n+' &nbsp;<i class="ti ti-arrow-right"></i></button></div>'
+      +'</div>'
+    +'</div>';
+    ov.innerHTML=card;document.getElementById("phone").appendChild(ov);
+    ov.addEventListener("click",function(e){if(e.target===ov)ov.remove();});
+    ov.querySelector(".close").onclick=function(){ov.remove();};
+    ov.querySelector(".conf").onclick=function(){st.barber=b.n;ov.remove();go("flow",2);};}
+  function wire(fn){Array.prototype.forEach.call(screen.querySelectorAll(".opt"),function(el){el.addEventListener("click",function(){el.classList.add("pop");el.style.borderColor="var(--gold)";setTimeout(function(){fn(el.getAttribute("data-v"));},150);});});bindBack();}
+  function bindBack(){var b=screen.querySelector(".bk");if(b)b.addEventListener("click",function(){if(st.step<=1){go("home",0);}else if(st.step===6&&!st.deposit){st.step=4;render();}else{st.step--;render();}});}
+  function render(){st.view==="home"?HOME():FLOW();}
+  render();
+})();
+</script>
+</body>
+</html>
