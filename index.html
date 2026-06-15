@@ -116,7 +116,7 @@
     wireBarbersCar();
     var bl=document.getElementById("brandlogo");if(bl)bl.addEventListener("click",openLogo);
     Array.prototype.forEach.call(screen.querySelectorAll(".ccard"),function(el){el.addEventListener("click",function(){openCut(+el.getAttribute("data-i"));});});
-    attachCar("carC","dotsC");autoScroll("carC");
+    attachCar("carC","dotsC");autoScroll("carC",-1);
   }
 
   function FLOW(){
@@ -216,11 +216,11 @@
 
   function attachCar(carId,dotsId){var car=document.getElementById(carId),dots=document.getElementById(dotsId);if(!car||!dots)return;car.addEventListener("scroll",function(){var cr=car.getBoundingClientRect(),cc=cr.left+cr.width/2,idx=0,min=1e9;for(var i=0;i<car.children.length;i++){var r=car.children[i].getBoundingClientRect(),c=r.left+r.width/2,dd=Math.abs(c-cc);if(dd<min){min=dd;idx=i;}}var act=idx%dots.children.length;for(var j=0;j<dots.children.length;j++){dots.children[j].className="dot"+(j===act?" on":"");}});}
 
-  function autoScroll(carId){var car=document.getElementById(carId);if(!car||car.children.length<2)return;var paused=false,t,pos=0,SPEED=0.55;
+  function autoScroll(carId,dir){var car=document.getElementById(carId);if(!car||car.children.length<2)return;dir=dir||1;var paused=false,t,pos=0,SPEED=0.55,init=false;
     function pause(){paused=true;clearTimeout(t);t=setTimeout(function(){paused=false;pos=car.scrollLeft;},500);}
     car.addEventListener("pointerdown",pause);car.addEventListener("wheel",pause,{passive:true});car.addEventListener("touchstart",pause,{passive:true});car.addEventListener("touchmove",pause,{passive:true});
     function step(){if(!document.body.contains(car))return;
-      if(paused){pos=car.scrollLeft;}else{var n=car.children.length/2,one=car.children[n].offsetLeft-car.children[0].offsetLeft;if(one>0){pos+=SPEED;if(pos>=one)pos-=one;car.scrollLeft=pos;}}
+      if(paused){pos=car.scrollLeft;}else{var n=car.children.length/2,one=car.children[n].offsetLeft-car.children[0].offsetLeft;if(one>0){if(!init){if(dir<0)pos=one;init=true;}pos+=SPEED*dir;if(pos>=one)pos-=one;if(pos<0)pos+=one;car.scrollLeft=pos;}}
       requestAnimationFrame(step);}
     requestAnimationFrame(step);}
 
