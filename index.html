@@ -59,7 +59,7 @@
     {n:"Nico",h:"clásico & barba",i:"NC",c:"280",r:"4.8",img:"turnero/barberos/Captura de pantalla 2026-06-14 211009.png",desc:"Corte clásico y arreglo de barba con navaja. Estilo atemporal y terminaciones limpias. Ideal si buscás algo sobrio y bien hecho."},
     {n:"Joaco",h:"urbano & color",i:"JC",c:"210",r:"5.0",img:"turnero/barberos/Captura de pantalla 2026-06-14 211020.png",desc:"Cortes urbanos, color y lo último en tendencias. Audaz y moderno. Para los que se animan a un cambio que se note."}
   ];
-  var services=[{n:"Corte",d:"30 min",p:"$6.000",dep:false,ic:"scissors",img:"turnero/cortes/1.png"},{n:"Corte + barba",d:"45 min",p:"$9.000",dep:true,ic:"razor",img:"turnero/cortes/2.png"},{n:"Diseño",d:"40 min",p:"$8.000",dep:true,ic:"wand",img:"turnero/cortes/3.png"}];
+  var services=[{n:"Corte",d:"30 min",p:"$6.000",dep:false,ic:"scissors",img:"turnero/cortes/1.png"},{n:"Corte + barba",d:"45 min",p:"$9.000",dep:false,ic:"razor",img:"turnero/cortes/2.png"},{n:"Diseño",d:"40 min",p:"$8.000",dep:false,ic:"wand",img:"turnero/cortes/3.png"}];
   var cuts=[
     {t:"Fade + textura",l:"248",img:"turnero/cortes/Captura de pantalla 2026-06-14 210838.png",desc:"Degradé prolijo con textura arriba. Versátil, moderno y de bajo mantenimiento."},
     {t:"Mid fade",l:"301",img:"turnero/cortes/Captura de pantalla 2026-06-14 212233.png",desc:"Degradé medio, el equilibrio justo entre lo clásico y lo moderno."},
@@ -74,7 +74,7 @@
   var st={view:"home",step:0,barber:null,service:null,day:null,time:null,deposit:false,daysShown:3,openDays:[0,1]};
 
   function gring(inner,size){size=size||64;return '<div style="width:'+size+'px;height:'+size+'px;border-radius:50%;padding:2px;background:conic-gradient(from 210deg,#E9C766,#7d6a30,#E9C766,#caa12f,#E9C766);flex:none;"><div style="width:100%;height:100%;border-radius:50%;background:#0a0805;display:flex;align-items:center;justify-content:center;font-family:\'Bebas Neue\';font-size:'+(size/2.6)+'px;color:var(--gold2);letter-spacing:1px;">'+inner+'</div></div>';}
-  function bars(active){var h='<div style="display:flex;gap:5px;padding:15px 16px 7px;">';for(var i=0;i<6;i++){h+='<div style="flex:1;height:2px;background:'+(i<active?'var(--gold)':'rgba(212,175,55,0.18)')+';"></div>';}return h+'</div>';}
+  function bars(active){var h='<div style="display:flex;gap:5px;padding:15px 16px 7px;">';for(var i=0;i<4;i++){h+='<div style="flex:1;height:2px;background:'+(i<active?'var(--gold)':'rgba(212,175,55,0.18)')+';"></div>';}return h+'</div>';}
   function topflow(label){return bars(st.step)+'<div style="display:flex;align-items:center;justify-content:space-between;padding:2px 16px 12px;"><button class="bk" style="font-size:22px;color:var(--dim);"><i class="ti ti-chevron-left"></i></button><div class="lab" style="font-size:11px;color:var(--golddim);">'+label+'</div><div style="width:22px;"></div></div>';}
   function goldBtn(txt,id){return '<button id="'+id+'" class="goldbtn" style="width:100%;padding:17px;border-radius:13px;font-size:16px;">'+txt+'</button>';}
   function chip(ic,txt){return '<span class="lab" style="font-size:10px;color:var(--gold2);background:rgba(212,175,55,0.07);border:1px solid rgba(212,175,55,0.45);padding:6px 11px;border-radius:4px;letter-spacing:1.5px;box-shadow:0 0 10px rgba(212,175,55,0.18),inset 0 0 8px rgba(212,175,55,0.06);"><i class="ti ti-'+ic+'" style="color:var(--gold);text-shadow:0 0 6px rgba(212,175,55,0.7);"></i> '+txt+'</span>';}
@@ -122,7 +122,7 @@
   function FLOW(){
     var s=st.step,h="";
     if(s===1){
-      h=topflow("Paso 1 de 6")+'<div class="up" style="padding:6px 0;min-height:calc(100% - 64px);display:flex;flex-direction:column;justify-content:center;">';
+      h=topflow("Paso 1 de 4")+'<div class="up" style="padding:6px 0;min-height:calc(100% - 64px);display:flex;flex-direction:column;justify-content:center;">';
       h+='<div style="padding:0 16px;"><div class="disp" style="font-size:40px;color:var(--txt);">ELEGÍ TU<br><span style="color:var(--gold2);">BARBERO</span></div><div style="height:2px;width:46px;background:var(--gold);margin:10px 0 4px;"></div></div>';
       h+=barbersCarHTML();
       h+='</div>';screen.innerHTML=h;wireBarbersCar();bindBack();
@@ -162,23 +162,12 @@
       h+='</div>';
       h+='<button id="cont" class="goldbtn" style="width:100%;padding:17px;border-radius:13px;font-size:16px;display:flex;align-items:center;justify-content:center;gap:9px;"><i class="ti ti-brand-whatsapp" style="font-size:20px;"></i> Confirmar turno</button>';
       h+='</div>';
-      screen.innerHTML=h;document.getElementById("cont").addEventListener("click",function(){st.step=st.deposit?5:6;render();});bindBack();
+      screen.innerHTML=h;document.getElementById("cont").addEventListener("click",function(){st.step=5;render();});bindBack();
     }
     else if(s===5){
-      h=topflow("Paso 5 · Seña")+'<div class="up" style="padding:6px 16px;">';
-      h+='<div class="disp" style="font-size:40px;">RESERVÁ<br><span style="color:var(--gold2);">CON SEÑA</span></div><div style="font-size:12px;color:var(--dim);margin:12px 0 20px;">Tomás pide una seña para guardar el turno.</div>';
-      h+='<div class="card" style="border-radius:14px;padding:18px;margin-bottom:14px;">';
-      [["Servicio",st.service],["Total","$9.000"]].forEach(function(r){h+='<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--dim);margin-bottom:9px;"><span>'+r[0]+'</span><span style="color:var(--txt);">'+r[1]+'</span></div>';});
-      h+='<div style="display:flex;justify-content:space-between;align-items:center;padding-top:11px;border-top:1px solid var(--line);"><span class="lab" style="font-size:11px;">Seña ahora</span><span class="disp" style="font-size:30px;color:var(--gold2);">$3.000</span></div></div>';
-      h+='<div style="display:flex;gap:10px;align-items:center;font-size:12px;color:var(--dim);background:var(--s1);border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:20px;"><i class="ti ti-clock-bolt" style="color:var(--gold);font-size:20px;"></i> Te guardamos el horario <b style="color:var(--txt);">10 minutos</b> mientras pagás.</div>';
-      h+='<button id="pay" class="goldbtn" style="width:100%;padding:17px;border-radius:13px;font-size:15px;"><i class="ti ti-credit-card"></i> Pagar seña con MercadoPago</button>';
-      h+='<div style="text-align:center;font-size:11px;color:var(--golddim);margin-top:13px;">El pago va directo a la cuenta de Tomás</div></div>';
-      screen.innerHTML=h;document.getElementById("pay").addEventListener("click",function(){st.step=6;render();});bindBack();
-    }
-    else if(s===6){
-      h=bars(6)+'<div class="up" style="padding:16px;min-height:calc(100% - 30px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">';
+      h=bars(4)+'<div class="up" style="padding:16px;min-height:calc(100% - 30px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">';
       h+='<div style="width:108px;height:108px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:54px;color:var(--gold2);box-shadow:0 0 44px rgba(212,175,55,0.25);"><i class="ti ti-check"></i></div>';
-      h+='<div class="disp" style="font-size:48px;margin-top:26px;">TURNO '+(st.deposit?'CONFIRMADO':'RESERVADO')+'</div>';
+      h+='<div class="disp" style="font-size:48px;margin-top:26px;">TURNO RESERVADO</div>';
       h+='<div style="font-size:15px;color:var(--dim);margin-top:10px;line-height:1.6;">Nos vemos '+(st.day||'pronto')+', <span style="color:var(--gold2);">Santi</span>.</div>';
       h+='<button class="restart lab" style="margin-top:36px;color:var(--golddim);font-size:10px;">Volver al inicio</button>';
       h+='</div>';
@@ -287,7 +276,7 @@
     h+='<div class="dots" id="dotsB">';barbers.forEach(function(b,i){h+='<span class="dot'+(i===0?' on':'')+'"></span>';});h+='</div>';return h;}
   function wireBarbersCar(){Array.prototype.forEach.call(screen.querySelectorAll(".bcard"),function(el){el.addEventListener("click",function(){openProfile(+el.getAttribute("data-i"));});});attachCar("carB","dotsB");autoScroll("carB");}
   function wire(fn){Array.prototype.forEach.call(screen.querySelectorAll(".opt"),function(el){el.addEventListener("click",function(){el.classList.add("pop");el.style.borderColor="var(--gold)";setTimeout(function(){fn(el.getAttribute("data-v"));},150);});});bindBack();}
-  function backStep(){var ovl=document.querySelector("#phone .ovl");if(ovl){ovl.remove();return;}if(st.view!=="flow")return;if(st.step<=1){go("home",0);}else if(st.step===6&&!st.deposit){st.step=4;render();}else{st.step--;render();}}
+  function backStep(){var ovl=document.querySelector("#phone .ovl");if(ovl){ovl.remove();return;}if(st.view!=="flow")return;if(st.step<=1){go("home",0);}else{st.step--;render();}}
   function bindBack(){var b=screen.querySelector(".bk");if(b)b.addEventListener("click",backStep);}
   function render(){st.view==="home"?HOME():FLOW();}
   (function(){var ph=document.getElementById("phone"),sx=0,sy=0,inCar=false;
