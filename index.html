@@ -148,20 +148,16 @@
     }
     else if(s===3){ STEP3(); return; }
     else if(s===4){
-      h=topflow("Paso 4 · Tus datos")+'<div class="up" style="padding:6px 16px;">';
-      h+='<div style="background:linear-gradient(120deg,#1d1609,#0e0b06);border:1px solid var(--line);border-radius:15px;padding:16px;margin-bottom:16px;">'
-        +'<div style="display:flex;gap:12px;align-items:center;margin-bottom:15px;">'+gring("S",46)+'<div style="flex:1;"><div style="font-family:\'Oswald\';font-weight:600;font-size:16px;">Qué bueno tenerte de vuelta, Santi.</div><div style="font-size:11px;color:var(--dim);margin-top:2px;">Te tenemos presente — este es tu corte N°'+(VISITS+1)+'.</div></div></div>'
+      h=topflow("Paso 4 · Confirmá")+'<div class="up" style="padding:6px 16px;min-height:calc(100% - 64px);display:flex;flex-direction:column;justify-content:center;">';
+      h+='<div style="background:linear-gradient(120deg,#1d1609,#0e0b06);border:1px solid var(--line);border-radius:15px;padding:18px;margin-bottom:20px;">'
+        +'<div style="display:flex;gap:12px;align-items:center;margin-bottom:16px;">'+gring("S",48)+'<div style="flex:1;"><div style="font-family:\'Oswald\';font-weight:600;font-size:17px;">Qué bueno tenerte de vuelta, Santi.</div><div style="font-size:11px;color:var(--dim);margin-top:2px;">Te tenemos presente — este es tu corte N°'+(VISITS+1)+'.</div></div></div>'
         +'<div class="lab" style="font-size:9px;color:var(--golddim);margin-bottom:7px;display:flex;justify-content:space-between;"><span>Tu progreso</span><span style="color:var(--gold2);">'+VISITS+' de '+GOAL+'</span></div>'
         +'<div style="height:9px;background:#0a0805;border:1px solid var(--line);border-radius:6px;overflow:hidden;"><div style="height:100%;width:'+Math.round(VISITS/GOAL*100)+'%;background:linear-gradient(90deg,#caa12f,#E9C766);"></div></div>'
-        +'<div style="display:flex;align-items:center;gap:6px;margin-top:9px;font-size:11px;color:var(--dim);"><i class="ti ti-gift" style="color:var(--gold);"></i> Falta <b style="color:var(--gold2);">1 corte</b> para tu beneficio.</div>'
+        +'<div style="display:flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;color:var(--dim);"><i class="ti ti-gift" style="color:var(--gold);"></i> Falta <b style="color:var(--gold2);">1 corte</b> para tu beneficio.</div>'
       +'</div>';
-      h+='<button class="opt goldbtn" data-v="repeat" style="width:100%;padding:12px;border-radius:11px;font-size:13px;margin-bottom:18px;"><i class="ti ti-rotate-clockwise-2"></i> Repetir mi último: Corte con Tomás</button>';
-      h+='<div class="lab" style="font-size:10px;color:var(--dim);margin:0 2px 6px;">Nombre</div><input value="Santi" style="width:100%;background:var(--s1);border:1px solid var(--line);border-radius:12px;padding:14px;color:var(--txt);font-size:15px;margin-bottom:13px;">';
-      h+='<div class="lab" style="font-size:10px;color:var(--dim);margin:0 2px 6px;">WhatsApp</div><input value="+54 9 11 5555-0123" style="width:100%;background:var(--s1);border:1px solid var(--line);border-radius:12px;padding:14px;color:var(--txt);font-size:15px;margin-bottom:22px;">';
-      h+=goldBtn("Continuar &nbsp;<i class=\"ti ti-arrow-right\"></i>","cont")+'</div>';
-      screen.innerHTML=h;var f=function(){st.step=st.deposit?5:6;render();};
-      Array.prototype.forEach.call(screen.querySelectorAll(".opt"),function(el){el.addEventListener("click",f);});
-      document.getElementById("cont").addEventListener("click",f);bindBack();
+      h+='<button id="cont" class="goldbtn" style="width:100%;padding:17px;border-radius:13px;font-size:16px;display:flex;align-items:center;justify-content:center;gap:9px;"><i class="ti ti-brand-whatsapp" style="font-size:20px;"></i> Confirmar turno</button>';
+      h+='</div>';
+      screen.innerHTML=h;document.getElementById("cont").addEventListener("click",function(){st.step=st.deposit?5:6;render();});bindBack();
     }
     else if(s===5){
       h=topflow("Paso 5 · Seña")+'<div class="up" style="padding:6px 16px;">';
