@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Turnero · negro & dorado</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.7.0/dist/tabler-icons.min.css" rel="stylesheet">
@@ -37,6 +37,11 @@
   .dot{width:6px;height:6px;border-radius:50%;background:rgba(212,175,55,0.28);transition:width .2s,background .2s;}
   .dot.on{background:var(--gold);width:18px;border-radius:3px;}
   .hint{font-size:11px;color:#5a5346;z-index:1;}
+  @media (max-width:600px){
+    body{padding:0;gap:0;min-height:100dvh;}
+    .tag,.hint{display:none;}
+    #phone{width:100vw;height:100dvh;border-radius:0;border:none;box-shadow:none;}
+  }
 </style>
 </head>
 <body>
