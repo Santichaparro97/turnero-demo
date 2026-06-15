@@ -150,12 +150,15 @@
     else if(s===3){ STEP3(); return; }
     else if(s===4){
       h=topflow("Paso 4 · Confirmá")+'<div class="up" style="padding:6px 16px;min-height:calc(100% - 64px);display:flex;flex-direction:column;justify-content:center;">';
-      h+='<div class="card" style="background:linear-gradient(120deg,#1d1609,#0e0b06);border:1px solid var(--line);border-radius:15px;padding:18px;margin-bottom:20px;">'
+      h+='<div class="card" style="background:linear-gradient(120deg,#1d1609,#0e0b06);border:1px solid var(--line);border-radius:15px;padding:18px;margin-bottom:14px;">'
         +'<div style="display:flex;gap:12px;align-items:center;margin-bottom:16px;">'+gring("S",48)+'<div style="flex:1;"><div style="font-family:\'Oswald\';font-weight:600;font-size:17px;">Qué bueno tenerte de vuelta, Santi.</div><div style="font-size:11px;color:var(--dim);margin-top:2px;">Te tenemos presente — este es tu corte N°'+(VISITS+1)+'.</div></div></div>'
         +'<div class="lab" style="font-size:9px;color:var(--golddim);margin-bottom:7px;display:flex;justify-content:space-between;"><span>Tu progreso</span><span style="color:var(--gold2);">'+VISITS+' de '+GOAL+'</span></div>'
         +'<div style="height:9px;background:#0a0805;border:1px solid var(--line);border-radius:6px;overflow:hidden;"><div style="height:100%;width:'+Math.round(VISITS/GOAL*100)+'%;background:linear-gradient(90deg,#caa12f,#E9C766);"></div></div>'
         +'<div style="display:flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;color:var(--dim);"><i class="ti ti-gift" style="color:var(--gold);"></i> Falta <b style="color:var(--gold2);">1 corte</b> para tu beneficio.</div>'
       +'</div>';
+      h+='<div class="card" style="border-radius:14px;padding:12px 16px;margin-bottom:18px;">';
+      [["Barbero",st.barber||"Tomás"],["Servicio",st.service||"Corte"],["Día",st.day||"Hoy sáb 14"],["Hora",st.time||"10:30"]].forEach(function(r){h+='<div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;"><span class="lab" style="font-size:10px;color:var(--dim);">'+r[0]+'</span><span style="font-family:\'Oswald\';font-weight:600;">'+r[1]+'</span></div>';});
+      h+='</div>';
       h+='<button id="cont" class="goldbtn" style="width:100%;padding:17px;border-radius:13px;font-size:16px;display:flex;align-items:center;justify-content:center;gap:9px;"><i class="ti ti-brand-whatsapp" style="font-size:20px;"></i> Confirmar turno</button>';
       h+='</div>';
       screen.innerHTML=h;document.getElementById("cont").addEventListener("click",function(){st.step=st.deposit?5:6;render();});bindBack();
@@ -273,7 +276,7 @@
       +'</div></div>'
     +'<div style="padding:12px 15px 14px;">'
       +'<div style="display:flex;align-items:center;justify-content:space-between;"><span class="lab" style="font-size:13px;color:var(--gold2);white-space:nowrap;">Ver perfil</span><i class="ti ti-arrow-up-right" style="color:var(--gold);font-size:17px;"></i></div>'
-      +'<div style="display:flex;align-items:center;gap:2px;margin-top:7px;">'+STARS+'<span class="lab" style="font-size:10px;color:var(--dim);margin-left:6px;">'+b.r+' · '+b.c+' cortes</span></div>'
+      +'<div style="display:flex;align-items:center;gap:14px;margin-top:8px;"><span class="lab" style="font-size:12px;color:var(--gold2);"><i class="ti ti-star" style="color:var(--gold);"></i> '+b.r+'</span><span class="lab" style="font-size:11px;color:var(--dim);"><i class="ti ti-rosette-discount-check" style="color:var(--gold);"></i> '+b.c+' cortes</span></div>'
     +'</div></button>';}
   function barbersCarHTML(){var h='<div class="car" id="carB" style="scroll-snap-type:none;">';barbers.forEach(function(b,i){h+=bcardHTML(b,i);});barbers.forEach(function(b,i){h+=bcardHTML(b,i);});h+='</div>';
     h+='<div class="dots" id="dotsB">';barbers.forEach(function(b,i){h+='<span class="dot'+(i===0?' on':'')+'"></span>';});h+='</div>';return h;}
